@@ -1,0 +1,254 @@
+model "A random start construction heuristic for the Warehouse Location Problem"
+  uses "mmive";
+
+forward procedure draw(Y: set of integer)
+forward function calculateTotalCost(Y: set of integer) : real
+forward function sortIntegerSet(Y: set of integer) : set of integer
+forward procedure printSolution(Y: set of integer)
+
+
+! ==================================================================================================
+! Reading problem parameters
+! ==================================================================================================
+filename := "WLP_100_40.txt"
+!filename := "WLP_300_80.txt"
+!filename := "WLP_500_150.txt"
+!filename := "WLP_1000_250.txt"
+
+declarations
+  ! Number of customers
+  n: integer
+  ! Number of potential locations
+  m: integer
+  ! Flag to indicate whether the data file contains coordinates
+  hasCoords: integer
+end-declarations
+
+! Read the number of customers and locations and the coordinates' flag
+initializations from filename
+  m n hasCoords
+end-initializations
+
+declarations
+  ! Set of potential locations
+  Locations = 1..m
+  ! Set of customers
+  Customers = 1..n
+  
+  ! Vector of customer demands
+  Demand: array(Customers) of real
+  ! Vector of setup costs for facilities
+  Setup: array(Locations) of real
+  ! Matrix of transportation costs
+  Cost: array(Customers,Locations) of real
+
+  ! Coordinates of customers
+  CoordsCust: array(1..2,Customers) of real    
+  ! Coordinates of locations
+  CoordsLoc: array(1..2,Locations) of real    
+	
+  ! Location set: contains the set of all indices of locations in the solution
+  Y, Y_min: set of integer
+end-declarations
+
+! Read demand and costs
+initializations from filename
+  Demand Cost Setup
+end-initializations
+
+! If the data file contains coordinates, read them now
+if(hasCoords = 1) then
+  initializations from filename
+    CoordsCust CoordsLoc
+  end-initializations
+end-if
+
+
+! ==================================================================================================
+! Random start construction heuristic
+! ==================================================================================================
+  
+! Initialise the cost of the best solution with +Infinity
+cost_min := MAX_REAL
+
+! Create 50 random solutions  
+forall(iter in 1..50) do
+  
+  ! Set the location set to the empty set
+  Y := {}
+    
+  ! Go over all locations and randomly draw a number in (0,1)
+  ! if the number is >= 0.9, add the location to Y
+  forall(j in Locations) do
+    u := random
+    if(u >= 0.9) then Y := Y + {j}; end-if
+  end-do
+    
+  ! Calculate the cost of this solution
+  cost := calculateTotalCost(Y);
+    
+  ! If the solution has lower costs than the best solution found so far, 
+  ! update the best solution and its costs
+  if cost < cost_min then
+    cost_min := cost
+    Y_min := Y
+  end-if
+end-do
+
+  
+! ==================================================================================================
+! Output
+! ==================================================================================================
+
+! Print the best solution
+printSolution(Y_min)
+
+
+! --------------------------------------------------------------------------------------------------
+! Save the set of selected locations in the data set under the name 'SelectedLocationsRandomStart'. 
+! This will allow us to import the constructed solution in another Mosel file.
+! --------------------------------------------------------------------------------------------------
+initializations to filename
+  Y_min as 'SelectedLocationsRandomStart'
+end-initializations
+
+! Display data in the user graph tab
+! --------------------------------------------------------------------------------------------------
+if(hasCoords = 1) then
+  draw(Y_min);
+end-if
+
+
+
+! ==================================================================================================
+! Function to calculate the total costs of a solution Y
+! ==================================================================================================
+function calculateTotalCost(Y: set of integer) : real
+
+  ! Compute the setup costs
+  returned := sum(j in Y) Setup(j)
+  
+  ! Compute the service costs for customers
+  returned += sum(i in Customers) min(j in Y) Cost(i,j)
+end-function
+
+
+
+! ==================================================================================================
+! Print a solution
+! ==================================================================================================
+procedure printSolution(Y: set of integer)
+  declarations
+    x: array(Customers) of integer
+  end-declarations
+  
+  writeln; writeln('---------------------------------------------------------')
+  write("Selected Locations: ")
+  forall(j in Y)
+    write(j, " ")
+  writeln; writeln
+(!
+  writeln("Allocations: ")
+  forall(i in Customers) do
+    ! We have to find the index of the cheapest location
+    mc := MAX_REAL
+    forall(j in Y) do
+      if Cost(i,j) < mc then
+        mc := Cost(i,j); x(i) := j
+      end-if
+    end-do
+    writeln(i, " -> ", x(i), ": ", mc)
+  end-do
+  writeln;
+!)
+  writeln("Setup costs: ", sum(j in Y) Setup(j))
+
+  writeln("Transportation costs: ", sum(i in Customers) min(j in Y) Cost(i,j))
+
+  writeln("Total costs: ", sum(j in Y) Setup(j) + sum(i in Customers) min(j in Y) Cost(i,j))
+  writeln('---------------------------------------------------------')
+end-procedure
+
+
+
+! ==================================================================================================
+! Display data in the user graph tab
+! ==================================================================================================
+procedure draw(Y: set of integer)
+  declarations
+    x: array(Customers) of integer
+  end-declarations
+
+  ! We have to find the index of the cheapest location for each customer
+  forall(i in Customers) do
+    mc := MAX_REAL
+    forall(j in Y) do
+      if Cost(i,j) < mc then
+        mc := Cost(i,j); x(i) := j
+      end-if
+    end-do
+  end-do
+
+  ! Now draw everything
+  xmin := 10; xmax := 0; ymin := 10; ymax := 0
+  
+  IVEerase
+  IVEzoom(0,0,10,10)
+  
+  declarations
+    graph: array(1..4) of integer
+  end-declarations
+
+  ! Draw the customers
+  graph(1) := IVEaddplot("Customers", IVE_BLACK)
+  forall(i in Customers) do
+    IVEdrawlabel(graph(1), CoordsCust(1,i), CoordsCust(2,i), "" + i)
+  end-do
+
+  ! Draw the locations
+  graph(2) := IVEaddplot("Locations", IVE_BLUE)
+  forall(j in Locations) do
+    IVEdrawlabel(graph(2), CoordsLoc(1,j), CoordsLoc(2,j), "" + j)
+  end-do
+
+  ! Draw the selected locations
+  graph(3) := IVEaddplot("Selected", IVE_RED)
+  forall(j in Y) do
+    IVEdrawlabel(graph(3), CoordsLoc(1,j), CoordsLoc(2,j), "" + j)
+  end-do
+  
+  ! Draw the allocations
+  graph(4) := IVEaddplot("Allocations", IVE_GREEN)
+  forall(i in Customers) do
+    IVEdrawarrow(graph(4), CoordsCust(1,i), CoordsCust(2,i), CoordsLoc(1,x(i)), CoordsLoc(2,x(i)))
+  end-do
+end-procedure
+
+
+! ==================================================================================================
+! Sort a set of integers by increasing values.
+! Unfortunately, Mosel sets are unsorted
+! ==================================================================================================
+function sortIntegerSet(Y: set of integer) : set of integer
+  ! Start by finding the largest value in the set
+  max_int := max(j in Y) j
+  
+  ! Create a binary vector to indicate whether an integer is in the set or not
+  declarations
+  	set_vector: array(1..max_int) of integer
+  	Yp: set of integer
+  end-declarations
+  
+  ! Set the vector entry to 1 for all integers in the set
+  forall(j in Y)
+    set_vector(j) := 1
+    
+  ! Go through the vector and add all elements with a value of 1 to the new set
+  forall(i in 1..max_int | set_vector(i) = 1)
+    Yp += {i}
+    
+  ! Return the new set
+  returned := Yp
+end-function
+
+end-model

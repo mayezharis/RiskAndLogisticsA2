@@ -1,0 +1,217 @@
+model "The Layout Problem"
+  uses "mmsystem", "mmjobs", "mmxprs", "mmxnlp"
+
+
+! ============================================================================
+! Reading problem parameters
+! ============================================================================
+filename := "assignment_files/Data_Xpress.txt";
+
+declarations
+  ! The number of product groups
+  nbProductGroups: integer
+  ! The maximal number of product groups per order
+  nbOrderSize: integer
+  ! The number of shelf spaces
+  nbShelves: integer
+  ! The number of orders
+  nbOrders: integer
+end-declarations
+
+! Reading the data
+initializations from filename
+  nbProductGroups nbOrderSize nbOrders nbShelves
+end-initializations
+
+declarations
+  ! The set of product groups
+  ProductGroups = 1..nbProductGroups
+  ! The set of orders
+  Orders = 1..nbOrders
+  ! The set of shelves
+  Shelves = 1..nbShelves
+
+  ! The matrix of orders
+  OrderMatrix: array(Orders,1..nbOrderSize) of integer
+
+  ! The distance matrix between pairs of shelves
+  DistanceShelves: array(Shelves,Shelves) of integer
+  ! The distance vector between the packaging area and each shelf
+  DistancePackaging: array(Shelves) of integer
+
+  ! Gives for each shelf the assigned product group
+  ShelfAllocation: array(Shelves) of integer
+end-declarations
+
+! Reading the data
+initializations from filename
+  OrderMatrix as "Orders"
+  ShelfAllocation as "Allocations"
+  DistanceShelves as "DistanceShelfShelf"
+  DistancePackaging as "DistancePackagingShelf"
+end-initializations
+
+declarations
+    x: array(Shelves, ProductGroups) of mpvar ! x_sp
+    y: array(Shelves, Shelves, Orders) of mpvar ! y_ijk
+    z: array(Shelves, Orders) of mpvar ! z_ik
+end-declarations
+
+
+! Decision variables
+forall(i in Shelves, p in ProductGroups) do
+    x(i,p) is_binary
+end-do
+
+forall(i in Shelves, j in Shelves, k in Orders) do
+    y(i,j,k) is_binary
+end-do
+
+forall(i in Shelves, k in Orders) do
+    z(i,k) is_binary
+end-do
+
+
+! ===========================================================
+! Adding the door to the distance matrix
+! ===========================================================
+
+declarations
+    ShelvesDoor = 0..nbShelves
+    FullDistanceMatrix: array(ShelvesDoor, ShelvesDoor) of integer
+    ! i, j: integer
+end-declarations
+
+forall(i in Shelves) do
+  FullDistanceMatrix(0, i) := DistancePackaging(i)
+  FullDistanceMatrix(i, 0) := DistancePackaging(i)
+end-do
+
+FullDistanceMatrix(0,0) := 0
+
+forall(i in Shelves) do
+  forall(j in Shelves) do
+    FullDistanceMatrix(i,j) := DistanceShelves(i,j)
+  end-do
+end-do
+
+! ! Code to check whether the full distance matrix works
+! writeln("Full Distance Matrix:")
+! forall(i in ShelvesDoor) do
+!     forall(j in ShelvesDoor) do
+!         write(FullDistanceMatrix(i, j), " ")
+!     end-do
+!     writeln
+! end-do
+! ===========================================================
+! ===========================================================
+
+
+
+! ===========================================================
+! Convert the Allocations vector to a matrix
+! ===========================================================
+declarations
+  AllocationsMatrix: array(ShelvesDoor, ProductGroups) of integer
+end-declarations
+
+forall(i in ShelvesDoor, p in ProductGroups) AllocationsMatrix(i, p) := 0
+
+forall(p in ProductGroups) AllocationsMatrix(0, p) := 0
+
+! Populate AllocationsMatrix based on the Allocations vector
+forall(i in Shelves) do
+  if ShelfAllocation(i) <> 0 then
+    AllocationsMatrix(i, ShelfAllocation(i)) := 1
+  end-if
+end-do 
+
+! ! Code to check whether the allocation matrix works
+! writeln("Allocation Matrix:")
+! forall(i in ShelvesDoor) do
+!     write("Shelf ", i, ":\t")
+!     forall(p in ProductGroups) do
+!         write(AllocationsMatrix(i, p), " ")
+!     end-do
+!     writeln
+! end-do
+! ===========================================================
+! ===========================================================
+
+
+! ===========================================================
+! Convert the Order matrix to full size
+! ===========================================================
+declarations
+  FullOrderMatrix: array(Orders, ProductGroups) of integer
+end-declarations
+
+forall(k in Orders, p in ProductGroups) FullOrderMatrix(k, p) := 0
+
+forall(k in Orders, p in 1..nbOrderSize) do
+    if(OrderMatrix(k,p) <> 0) then
+      FullOrderMatrix(k, OrderMatrix(k,p)) := 1
+    end-if
+end-do
+
+! forall(p in ProductGroups) AllocationsMatrix(0, p) := 0
+
+
+! ! Code to check whether the full order matrix works
+! writeln("Full Order Matrix:")
+! forall(k in Orders) do
+!     write("Order ", k, ":\t")
+!     forall(p in ProductGroups) do
+!         write(FullOrderMatrix(k, p), " ")
+!     end-do
+!     writeln
+! end-do
+! ===========================================================
+! ===========================================================
+
+
+
+
+
+! Objective function
+
+TotalWalkingDistance := sum(k in Orders, i in ShelvesDoor, j in ShelvesDoor | i <> j) (FullDistanceMatrix(i,j) * y(i,j,k))
+
+
+
+! Constraints
+
+! Must start and end each order at the door to Packaging.
+forall(k in Orders) do
+  StartFromDoorCS(k) := sum(j in ShelvesDoor)(y(0,j,k)) = 1
+  EndAtDoorCS(k) := sum(i in ShelvesDoor)(y(i,0,k)) = 1
+end-do
+
+
+! Each shelf should not be visited more than once per order
+forall(j in ShelvesDoor, k in Orders) do
+  MaxOneDepartureCS(j,k) := sum(i in ShelvesDoor)(y(i,j,k)) <= 1
+end-do
+
+forall(i in ShelvesDoor, k in Orders) do
+  MaxOneArrivalCS(i,k) := sum(j in ShelvesDoor)(y(i,j,k)) <= 1
+end-do
+
+! Can't go from shelf i to shelf i
+forall(i in ShelvesDoor, k in Orders) NoReturnCS(i,k) := y(i,i,k) = 0
+
+
+! =======================================================
+! NEED HELP WITH THIS CONSTRAINT
+! =======================================================
+! Only visit shelves that correspond to the products in the order
+forall(k in Orders, j in Shelves) do
+  OnlyVisitRequiredCS(k,j) := sum(i in ShelvesDoor)(y(i,j,k)) = sum(p in ProductGroups)(FullOrderMatrix(k,p))
+end-do
+! =======================================================
+! =======================================================
+
+minimise(TotalWalkingDistance)
+
+end-model
+
