@@ -1,0 +1,154 @@
+model ModelName
+  uses "mmxprs"
+  ! uses "mminsight" ! uncomment this line for an Xpress Insight model
+
+  filename := "Data_Xpress.txt";
+
+  declarations
+    ! The number of product groups
+    nbProductGroups: integer
+    ! The maximal number of product groups per order
+    nbOrderSize: integer
+    ! The number of shelf spaces
+    nbShelves: integer
+    ! The number of orders
+    nbOrders: integer
+  end-declarations
+  
+  ! Reading the data
+  initializations from filename
+    nbProductGroups nbOrderSize nbOrders nbShelves
+  end-initializations
+  
+  declarations
+    ! The set of product groups
+    ProductGroups = 1..nbProductGroups
+    ! The set of orders
+    Orders = 1..nbOrders
+    ! The set of shelves
+    Shelves = 1..nbShelves
+  
+    randInt: integer
+    tempInt: integer
+  
+    ! The matrix of orders
+    OrderMatrix: array(Orders,1..nbOrderSize) of integer
+  
+    ! The distance matrix between pairs of shelves
+    DistanceShelves: array(Shelves,Shelves) of integer
+    ! The distance vector between the packaging area and each shelf
+    DistancePackaging: array(Shelves) of integer
+  
+    ! Gives for each shelf the assigned product group
+    ShelfAllocation: array(Shelves) of integer
+    randomShelfAllocation: array(Shelves) of integer
+    
+    dynamicProductGroups: dynamic array(1..nbProductGroups) of integer
+    tempDynamicProductGroups: dynamic array(1..nbProductGroups) of integer
+    tempDynamicProductGroups2: dynamic array(1..nbProductGroups) of integer
+  end-declarations
+  
+  
+  
+  
+  
+  procedure randomConstructionHeuristic
+    randomShelfAllocation := ShelfAllocation
+    
+    tempShelvesIndex := list(2..nbShelves)
+    reverse(tempShelvesIndex)
+    
+    forall(p in ProductGroups) randomShelfAllocation(p):=p
+    
+    forall(i in tempShelvesIndex) do
+      !Select random integer between 1 and i
+      randInt := integer(round((i*random)+0.5))
+      
+      !Switch random 
+      temp := randomShelfAllocation(i)
+      randomShelfAllocation(i) := randomShelfAllocation(randInt)
+      randomShelfAllocation(randInt) := temp
+      
+    end-do
+    
+  end-procedure
+  
+  
+  procedure randomConstructionHeuristic2
+    randomShelfAllocation := ShelfAllocation
+    
+    forall(p in ProductGroups) tempDynamicProductGroups(p) := p
+    !tempDynamicProductGroups := dynamicProductGroups
+  
+    forall(p in ProductGroups) do
+      randInt := integer(round((getsize(tempDynamicProductGroups)*random)+0.5))
+      
+      randProduct := tempDynamicProductGroups(randInt)
+      
+      writeln("size of p^: ", getsize(tempDynamicProductGroups))
+      writeln(tempDynamicProductGroups)
+      writeln("randint: ", randInt)
+      writeln("randprod: ", randProduct)
+      writeln
+      ! writeln("p: ", p)
+      ! writeln("random int: ", randInt)
+      ! writeln("random product: ", randProduct)
+      
+      randomShelfAllocation(p) := randProduct
+    
+    
+      
+    
+      delcell(tempDynamicProductGroups(randInt))
+      
+      
+      
+      
+      
+      ! if(getsize(tempDynamicProductGroups) = 0) then
+      !   tempDynamicProductGroups := dynamicProductGroups
+      ! end-if
+    end-do
+  
+  
+  end-procedure  
+
+  !randomConstructionHeuristic2
+  
+  !writeln(randomShelfAllocation)
+  
+  
+  
+  function RemoveFromArray(arr: array(range) of integer, item: integer): array(range) of integer
+    declarations
+        resultArr: array(integer) of integer  ! Resulting array after removing the item
+        i, j: integer
+    end-declarations
+
+    resultArr := arr  ! Initialize the resulting array with the input array
+
+    forall(i in 1..getsize(arr)) do
+        if arr(i) = item then
+            ! Shift elements after the removed item to the left
+            forall(j in i+1..getsize(resultArr)) do
+                resultArr(j-1) := resultArr(j)
+            end-do
+            delcell(resultArr(getsize(resultArr)))!dim(resultArr) := dim(resultArr) - 1  ! Reduce the size of the resulting array
+        end-if
+    end-do
+
+    returned:= resultArr
+  end-function
+  
+  
+  writeln("dynamicProductGroups")
+  dynamicProductGroups := RemoveFromArray(dynamicProductGroups, 1)
+  writeln("dynamicProductGroups")
+  
+  
+  
+  
+  
+end-model
+
+
