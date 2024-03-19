@@ -9,36 +9,67 @@
         "json()": {
             "meta": {
                 "accessList": [
-                    "tab2"
+                    "tab9",
+                    "tab3"
                 ]
             },
             "name": "pane2",
             "nodes": [
                 {
                     "type": "tab",
-                    "name": "tab2",
+                    "name": "tab3",
                     "path": "",
                     "className": [
-                        "tab2"
+                        "tab3"
                     ],
                     "document": {
                         "changed": false,
                         "meta": {
-                            "timestamp": 1710847473170
+                            "timestamp": 1710872405087
+                        },
+                        "filter": true,
+                        "title": "RnLA2_model.mos - Stopped",
+                        "tooltip": "RnLA2_model.mos - Stopped",
+                        "output": {
+                            "id": "output9578621",
+                            "width": 1514,
+                            "height": 208,
+                            "config": {
+                                "runner": "Mosel",
+                                "command": "RnLA2_model.mos",
+                                "debug": false,
+                                "toolbar": true,
+                                "name": ""
+                            }
+                        }
+                    },
+                    "editorType": "output",
+                    "active": false
+                },
+                {
+                    "type": "tab",
+                    "name": "tab9",
+                    "path": "",
+                    "className": [
+                        "tab9"
+                    ],
+                    "document": {
+                        "changed": false,
+                        "meta": {
+                            "timestamp": 1710872646812
                         },
                         "filter": true,
                         "title": "Xpress\\ Codes/GreedyHeuristic.mos - Stopped",
                         "tooltip": "Xpress\\ Codes/GreedyHeuristic.mos - Stopped",
                         "output": {
-                            "id": "output334790",
+                            "id": "output9943323",
                             "width": 1514,
                             "height": 208,
                             "config": {
                                 "runner": "Mosel",
                                 "command": "Xpress\\ Codes/GreedyHeuristic.mos",
                                 "debug": false,
-                                "toolbar": true,
-                                "name": ""
+                                "toolbar": true
                             }
                         }
                     },
@@ -57,7 +88,7 @@
             "@acestatus": 1,
             "@base-step-wizard": 2,
             "@divider": 4,
-            "@document": 6,
+            "@document": 11,
             "@editorswitch": 1,
             "@fico.vdl.attributes-panel": 1,
             "@fico.vdl.palette-panel": 1,
@@ -65,9 +96,9 @@
             "@menu": 3,
             "@menuitem": 8,
             "@pane": 3,
-            "@session": 6,
-            "@tab": 3,
-            "@undoManager": 6,
+            "@session": 11,
+            "@tab": 10,
+            "@undoManager": 11,
             "@welcome": 1
         }
     },
@@ -99,7 +130,7 @@
     "panecycle": {
         "json()": [
             "tab0",
-            "tab2"
+            "tab9"
         ]
     },
     "panels": {
@@ -163,13 +194,16 @@
     },
     "tabs": {
         "json()": {
-            "focus": "/Xpress Codes/GreedyHeuristic.mos",
+            "focus": "tab9",
             "meta": {
                 "accessList": [
                     "tab0",
+                    "tab8",
+                    "tab7",
+                    "tab6",
+                    "tab1",
                     "tab5",
-                    "tab4",
-                    "tab1"
+                    "tab4"
                 ]
             },
             "name": "pane0",
@@ -241,13 +275,12 @@
                     "name": "tab0",
                     "path": "/Xpress Codes/GreedyHeuristic.mos",
                     "className": [
-                        "tab0",
-                        "focus"
+                        "tab0"
                     ],
                     "document": {
                         "changed": false,
                         "meta": {
-                            "timestamp": 1710859940962
+                            "timestamp": 1710861477990
                         },
                         "filter": true,
                         "title": "GreedyHeuristic.mos",
@@ -265,37 +298,74 @@
                         "tab1"
                     ],
                     "document": {
-                        "filter": true,
-                        "title": "RnLA2_model.mos",
-                        "tooltip": "/RnLA2_model.mos",
-                        "ace": {
-                            "folds": [],
-                            "customSyntax": "plugins/fico.ide.language.mosel/mode/mosel",
-                            "scrolltop": 0,
-                            "scrollleft": 0,
-                            "selection": {
-                                "start": {
-                                    "row": 7,
-                                    "column": 0
-                                },
-                                "end": {
-                                    "row": 7,
-                                    "column": 47
-                                },
-                                "isBackwards": true
-                            },
-                            "options": {
-                                "guessTabSize": true,
-                                "useWrapMode": false,
-                                "wrapToView": true
-                            },
-                            "firstLineState": 0
-                        },
-                        "hash": "c7f773259c27e8eabcc94949127a83e8c25b1995",
+                        "changed": false,
                         "meta": {
                             "timestamp": 1710846382265
                         },
-                        "changed": false
+                        "filter": true,
+                        "title": "RnLA2_model.mos",
+                        "tooltip": "/RnLA2_model.mos",
+                        "ace": {}
+                    },
+                    "editorType": "ace",
+                    "active": false
+                },
+                {
+                    "type": "tab",
+                    "name": "tab6",
+                    "path": "/Xpress Codes/Data_Xpress.txt",
+                    "className": [
+                        "tab6"
+                    ],
+                    "document": {
+                        "changed": false,
+                        "meta": {
+                            "timestamp": 1710842457562
+                        },
+                        "filter": true,
+                        "title": "Data_Xpress.txt",
+                        "tooltip": "/Xpress Codes/Data_Xpress.txt",
+                        "ace": {}
+                    },
+                    "editorType": "ace",
+                    "active": false
+                },
+                {
+                    "type": "tab",
+                    "name": "tab7",
+                    "path": "/WS5_solns/WLP_Interchange.mos",
+                    "className": [
+                        "tab7"
+                    ],
+                    "document": {
+                        "changed": false,
+                        "meta": {
+                            "timestamp": 1710846382282
+                        },
+                        "filter": true,
+                        "title": "WLP_Interchange.mos",
+                        "tooltip": "/WS5_solns/WLP_Interchange.mos",
+                        "ace": {}
+                    },
+                    "editorType": "ace",
+                    "active": false
+                },
+                {
+                    "type": "tab",
+                    "name": "tab8",
+                    "path": "/WS5_solns/WLP_RandomStart.mos",
+                    "className": [
+                        "tab8"
+                    ],
+                    "document": {
+                        "changed": false,
+                        "meta": {
+                            "timestamp": 1710846382282
+                        },
+                        "filter": true,
+                        "title": "WLP_RandomStart.mos",
+                        "tooltip": "/WS5_solns/WLP_RandomStart.mos",
+                        "ace": {}
                     },
                     "editorType": "ace",
                     "active": false
@@ -308,7 +378,7 @@
     },
     "tree_selection": {
         "json()": [
-            "/Xpress Codes/Data_Xpress.txt"
+            "/WS5_solns/WLP_RandomStart.mos"
         ]
     },
     "welcome": {
