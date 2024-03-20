@@ -58,7 +58,7 @@ end-initializations
 declarations
     x: array(ShelvesDoor, ProductGroups) of integer ! x_sp
     y: array(ShelvesDoor, ShelvesDoor, Orders) of mpvar ! y_ijk
-    z: array(ShelvesDoor, Orders) of mpvar ! z_ik
+    ! z: array(ShelvesDoor, Orders) of mpvar ! z_ik
     u: array(ShelvesDoor, Orders) of mpvar ! u_ik
 end-declarations
 
@@ -70,14 +70,8 @@ end-declarations
 
 forall(i in ShelvesDoor, j in ShelvesDoor, k in Orders) do
     y(i,j,k) is_binary
-end-do
-
-forall(i in ShelvesDoor, k in Orders) do
-    z(i,k) is_binary
-end-do
-
-forall(i in ShelvesDoor, k in Orders) do
-  u(i,k) is_integer
+    ! z(i,k) is_binary
+    u(i,k) is_integer
 end-do
 
 
@@ -262,23 +256,24 @@ end-do
 
 
 
-! rule_no_subtour:
-!     forall (i, j in nodes : j != 1) u[i] + x[i][j] <= u[j] + (n - 1) * (1 - x[i][j]);
 
-!     u[1] == 0; // Fixes the rank of the first node
-
-! MTZ constraints
+! ! MTZ constraints
 forall(k in Orders) do
-  forall(i in ShelvesDoor, j in ShelvesDoor | i <> 0 and j <> 0) do
-    MTZ_1CS(k,i,j) := u(i,k) - u(j,k) + 1 <= (nbProductsPerOrder(k) - 1)*(1- y(i,j,k))
-    ! u(j,k) = 0
+  MTZ_doorCS1(k) := u(0,k) = 1
+  ! MTZ_doorCS2(k) := u(nbProductsPerOrder(k)+2,k) = 0
+  ! forall(i in nbProductsPerOrder(k)+2..7) MTZ_staydoorCS(i,k) := u(i,k) = 0
+  forall(i in Shelves, j in Shelves| i <> j) do
+    ! MTZ_1CS(k,i,j) := u(i,k) - u(j,k) + 1 <= (nbProductsPerOrder(k) - 1)*(1- y(i,j,k))
+    MTZ_CS(k,i,j) := u(i,k) - u(j,k) + nbProductsPerOrder(k)*y(i,j,k) <= nbProductsPerOrder(k)-1
   end-do
 end-do
 
-! forall(k in Orders, i in ShelvesDoor) do
-!   MTZ_2CS(k,i) := u(i,k) >= 1 
-!   MTZ_3CS(k,i) := u(i,k) <= nbProductsPerOrder(k)
-! end-do
+
+
+forall(k in Orders, i in Shelves) do
+    MTZ_2CS(k,i) := u(i,k) >= 1
+    ! MTZ_3CS(k,i) := u(i,k) <= nbProductsPerOrder(k) + 1
+end-do
 
 minimise(TotalWalkingDistance)
 
@@ -341,11 +336,42 @@ end-procedure
 
 
 ! Print solution
+! declarations
+! shelves_visited: list of integer
+! end-declarations
+
+! writeln("Routes for each order:")
+! writeln("-----------------------")
+! forall(k in Orders) do
+!     writeln("Order ", k, ":")
+!     writeln("-------")
+!     writeln("Route:")
+!     writeln("------")
+!     ! Initialize a list to store visited shelves
+!     shelves_visited := []
+
+!     forall(i in ShelvesDoor, j in ShelvesDoor | i <> j) do
+!         if (getsol(y(i,j,k)) > 0.5) then
+!             shelves_visited.add(j) ! Add the visited shelf to the list
+!         end-if
+!     end-do
+    
+!     ! Print the route
+!     writeln("From door to shelf ", shelves_visited.at(1))
+!     forall(idx in 2..shelves_visited.size) do
+!         writeln("From shelf ", shelves_visited.at(idx-1), " to shelf ", shelves_visited.at(idx))
+!     end-do
+!     writeln("From shelf ", shelves_visited.at(shelves_visited.size), " back to door")
+!     writeln
+! end-do
+
+
+
 forall(k in Orders) do
     writeln("Order ", k, ":")
     forall(i in ShelvesDoor, j in ShelvesDoor | i <> j) do
         if (getsol(y(i,j,k)) > 0.5) then
-            writeln("   From shelf ", i, " to shelf ", j)
+            write(i, " --> ", j, ", " )
         end-if
     end-do
     writeln

@@ -1,7 +1,10 @@
 {
+    "breakpoints": {
+        "json()": []
+    },
     "console": {
         "@expanded": true,
-        "@height": 380.60003662109375,
+        "@height": 276.60003662109375,
         "@maximized": "false",
         "json()": {
             "meta": {
@@ -29,7 +32,7 @@
                         "output": {
                             "id": "output815310",
                             "width": 1484,
-                            "height": 355,
+                            "height": 251,
                             "config": {
                                 "runner": "Mosel",
                                 "command": "RnLA2_model.mos",
@@ -61,7 +64,7 @@
             "@form": 4,
             "@menu": 6,
             "@menuitem": 17,
-            "@pane": 7,
+            "@pane": 8,
             "@session": 8,
             "@tab": 7,
             "@undoManager": 7,
@@ -221,7 +224,7 @@
                         "changed": false,
                         "meta": {
                             "ignoreState": 0,
-                            "timestamp": 1710869133419
+                            "timestamp": 1710957565921
                         },
                         "filter": true,
                         "title": "RnLA2_model.mos",
