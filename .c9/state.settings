@@ -78,8 +78,8 @@
     "local": {
         "window": {
             "@fullscreen": false,
-            "@maximized": true,
-            "@minimized": false,
+            "@maximized": false,
+            "@minimized": true,
             "@position": "761:0",
             "@size": "764:787"
         }

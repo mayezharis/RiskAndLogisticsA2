@@ -82,6 +82,7 @@ end-do
 
 
 
+
 ! ===========================================================
 ! Adding the door to the distance matrix
 ! ===========================================================
@@ -269,15 +270,15 @@ end-do
 ! MTZ constraints
 forall(k in Orders) do
   forall(i in ShelvesDoor, j in ShelvesDoor | i <> 0 and j <> 0) do
-    u(i,k) - u(j,k) + 1 <= (nbProductsPerOrder(k) - 1)*(1- y(i,j,k))
+    MTZ_1CS(k,i,j) := u(i,k) - u(j,k) + 1 <= (nbProductsPerOrder(k) - 1)*(1- y(i,j,k))
     ! u(j,k) = 0
   end-do
 end-do
 
-forall(k in Orders, i in ShelvesDoor) do
-  u(i,k) >= 1 
-  u(i,k) <= nbProductsPerOrder(k)
-end-do
+! forall(k in Orders, i in ShelvesDoor) do
+!   MTZ_2CS(k,i) := u(i,k) >= 1 
+!   MTZ_3CS(k,i) := u(i,k) <= nbProductsPerOrder(k)
+! end-do
 
 minimise(TotalWalkingDistance)
 
@@ -298,6 +299,46 @@ case getprobstat of
 end-case
 writeln("Problem status: ", status)
 end-procedure
+
+
+! =====================================================================
+! =====================================================================
+! declarations
+!     ! Add a variable to keep track of iteration count
+!     iter: integer
+!     status: integer
+! end-declarations
+
+! ! Initialize iteration count
+! iter := 0
+
+! ! Before optimization starts, print initial values
+! writeln("Initial values:")
+! writeln("---------------")
+! print_status ! Print problem status
+! ! Add more print statements as needed to inspect initial values of variables and constraints
+
+! ! Inside the optimization loop, periodically print intermediate values
+! while (status <> XPRS_OPT and status <> XPRS_UNF) do
+!     iter := iter + 1 ! Increment iteration count
+!     writeln("Iteration ", iter, ":")
+!     writeln("---------------")
+!     ! Add print statements to inspect values of variables and constraints
+!     status := getprobstat ! Update problem status
+!     writeln("Problem status: ", status)
+!     ! Add more print statements as needed to inspect intermediate values
+! end-do
+
+! ! After optimization, print final solution
+! writeln("Final solution:")
+! writeln("---------------")
+! print_status ! Print final problem status
+! ! Add more print statements as needed to inspect final values of variables and constraints
+
+! =====================================================================
+! =====================================================================
+! =====================================================================
+
 
 ! Print solution
 forall(k in Orders) do
