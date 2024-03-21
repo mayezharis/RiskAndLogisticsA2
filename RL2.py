@@ -36,8 +36,8 @@ Allocation = Allocations[0]
 
 NbOrders = len(Orders)
 OrderSize = 5
-NbProductGroups = 90
-NbShelves = 96
+NbProductGroups = 9
+NbShelves = 9
 
 
 
@@ -59,7 +59,7 @@ FullDistanceMatrix = np.zeros((NbShelves+1, NbShelves+1))
 for i in Shelves:
     FullDistanceMatrix[0][i] = DistancePackagingShelf[0][i-1]
     FullDistanceMatrix[i][0] = DistancePackagingShelf[0][i-1]
-FullDistanceMatrix[0][0] = 0
+FullDistanceMatrix[0][0] == 0
 for i in Shelves:
     for j in Shelves:
         FullDistanceMatrix[i][j] = DistanceShelfShelf[i-1][j-1]
@@ -71,7 +71,7 @@ FullOrderMatrix = np.zeros((NbOrders + 1, NbProductGroups + 1))
 for k in range(NbOrders):
     for p in range(OrderSize):
         if OrderMatrix[k][p] != 0:
-            FullOrderMatrix[k][OrderMatrix[k][p]] = 1
+            FullOrderMatrix[k][OrderMatrix[k][p]] == 1
 
 
 
@@ -89,8 +89,8 @@ m = Model("WAP")
 #Decision Variables
 x = m.addVars(ShelvesDoor, ProductGroups, vtype=GRB.BINARY, name = 'x')
 y = m.addVars(ShelvesDoor, ShelvesDoor, Orders_, vtype=GRB.BINARY, name = 'y')
-u = m.addVars(ShelvesDoor, Orders_, lb = 1, ub = 5,  vtype = GRB.CONTINUOUS, name = 'u')
-z = m.addVars(ShelvesDoor, Orders_, vtype=GRB.BINARY, name = 'z')
+u = m.addVars(ShelvesDoor, Orders_, lb = 1, ub = 5, vtype = GRB.CONTINUOUS, name = 'u')
+#z = m.addVars(ShelvesDoor, Orders_, vtype=GRB.BINARY, name = 'z')
 
 #Optimization Type
 m.ModelSense = GRB.MINIMIZE
@@ -100,45 +100,51 @@ m.setObjective(3*quicksum(FullDistanceMatrix[i][j]*y[i,j,k] for k in Orders_ for
 
 #Constraints
 
-'''for p in ProductGroups:
-    x[0, p] = 0'''
+for p in ProductGroups:
+    x[0, p] == 0
 
 for i in ShelvesDoor:
     if Allocation[i-1] != 0:
         for p in ProductGroups:
-
-            x[0, p] = 0
-
             if p == Allocation[i]:
-                x[i, p] = 1
+                x[i, p] == 1
             else:
-                x[i, p] = 0
+                x[i, p] == 0
 
 
 #Can't go from shelf i to shelf i
 m.addConstrs((y[i,i,k] == 0 for i in ShelvesDoor for k in Orders_), name = 'NoSelfLoop')
 
 #Each shelf should not be visited more than once per route:
-#m.addConstrs((quicksum(y[i,j,k] for j in ShelvesDoor) <= 1 for i in ShelvesDoor for k in Orders_), name = 'EnterShelfOnce')
+m.addConstrs((quicksum(y[i,j,k] for j in ShelvesDoor) <= 1 for i in ShelvesDoor for k in Orders_), name = 'EnterShelfOnce')
 m.addConstrs((quicksum(y[i,j,k] for i in ShelvesDoor) <= 1 for j in ShelvesDoor for k in Orders_), name = 'LeaveShelfOnce')
 
-m.addConstrs((quicksum(y[i,j,k] for i in ShelvesDoor) == quicksum(y[j,i,k] for j in ShelvesDoor) for k in Orders_), name = 'LeaveShelfOnce')
-
 #Only visit shelves that correspond to the products in the order
-m.addConstrs((quicksum(y[i,j,k] for i in Shelves) == x[j,p] for j in ShelvesDoor for k in Orders_ for p in ProductGroups), name = 'Assign')
+for k in Orders_:
+    for p in ProductGroups:
+        if FullOrderMatrix[k][p] == 1: 
+            m.addConstrs((quicksum(y[i,j,k] for i in ShelvesDoor) == x[j,p] for j in Shelves for k in Orders_ for p in ProductGroups), name = 'Assign')
 
-#MTZ constraints
-m.addConstrs((u[i, k] - u[j, k] + NbProductsPerOrder[k-1] * y[i, j, k] <= NbProductsPerOrder[k-1]-1 for i in ShelvesDoor for j in ShelvesDoor for k in Orders_), name = 'Track position')
+#MTZ 
+m.addConstrs((u[0, k] == 1 for k in Orders_), name = 'MTZ1')
+for i in ShelvesDoor:
+    for j in ShelvesDoor:
+        if i != j:
+            m.addConstrs((u[i, k] - u[j, k] + 1 <= (NbProductsPerOrder[k-1] - 1)*(1- y[i, j, k]) for k in Orders_), name = 'Track position')
+
+
+m.addConstrs((u[i,k] >= 1 for i in Shelves for k in Orders_), name = 'MTZ2')
+m.addConstrs((u[i,k] <= NbProductsPerOrder[k-1] + 1 for i in Shelves for k in Orders_), name = 'MTZ3')
 
 #Each route must begin at the door
-m.addConstrs((quicksum(y[0, j, k] for j in ShelvesDoor) == 1 for k in Orders_), name = 'StartAtDoor')
+m.addConstrs((quicksum(y[0, j, k] for j in Shelves) == 1 for k in Orders_), name = 'StartAtDoor')
 
 #Each route must end at the door
-m.addConstrs((quicksum(y[i, 0, k] for i in ShelvesDoor) == 1 for k in Orders_), name = 'EndAtDoor')
+m.addConstrs((quicksum(y[i, 0, k] for i in Shelves) == 1 for k in Orders_), name = 'EndAtDoor')
 
 
 
-m.Params.TimeLimit = 1
+m.Params.TimeLimit = 15
 m.update()
 
 try:
