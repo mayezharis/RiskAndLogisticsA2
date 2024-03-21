@@ -1,15 +1,28 @@
 {
+    "ace": {
+        "search": {
+            "@backwards": "false",
+            "@highlightmatches": "true",
+            "@matchcase": "false",
+            "@preservecase": "false",
+            "@regex": "false",
+            "@wholeword": "false",
+            "@wraparound": "true"
+        }
+    },
     "breakpoints": {
         "json()": []
     },
     "console": {
         "@expanded": true,
-        "@height": 276.60003662109375,
+        "@height": 281,
         "@maximized": "false",
         "json()": {
             "meta": {
                 "accessList": [
-                    "tab6"
+                    "tab7",
+                    "tab6",
+                    "tab0"
                 ]
             },
             "name": "pane2",
@@ -31,14 +44,75 @@
                         "tooltip": "RnLA2_model.mos - Stopped",
                         "output": {
                             "id": "output815310",
-                            "width": 1484,
-                            "height": 251,
+                            "width": 1148,
+                            "height": 249,
                             "config": {
                                 "runner": "Mosel",
                                 "command": "RnLA2_model.mos",
                                 "debug": false,
                                 "toolbar": true,
                                 "name": ""
+                            }
+                        }
+                    },
+                    "editorType": "output",
+                    "active": false
+                },
+                {
+                    "type": "tab",
+                    "name": "tab0",
+                    "path": "",
+                    "className": [
+                        "tab0"
+                    ],
+                    "document": {
+                        "changed": false,
+                        "meta": {
+                            "timestamp": 1711019559000
+                        },
+                        "filter": true,
+                        "title": "RL2.py - Stopped",
+                        "tooltip": "RL2.py - Stopped",
+                        "output": {
+                            "id": "output531610",
+                            "width": 1148,
+                            "height": 249,
+                            "config": {
+                                "runner": "Python (local)",
+                                "command": "RL2.py",
+                                "debug": false,
+                                "toolbar": true,
+                                "name": ""
+                            }
+                        }
+                    },
+                    "editorType": "output",
+                    "active": false
+                },
+                {
+                    "type": "tab",
+                    "name": "tab7",
+                    "path": "",
+                    "className": [
+                        "tab7"
+                    ],
+                    "document": {
+                        "changed": false,
+                        "meta": {
+                            "timestamp": 1711022603860
+                        },
+                        "filter": true,
+                        "title": "Model_attempt2.mos - Stopped",
+                        "tooltip": "Model_attempt2.mos - Stopped",
+                        "output": {
+                            "id": "output389725",
+                            "width": 1148,
+                            "height": 249,
+                            "config": {
+                                "runner": "Mosel",
+                                "command": "Model_attempt2.mos",
+                                "debug": false,
+                                "toolbar": true
                             }
                         }
                     },
@@ -53,21 +127,21 @@
     },
     "ext": {
         "counters": {
-            "@ace": 5,
-            "@acestatus": 5,
+            "@ace": 1,
+            "@acestatus": 1,
             "@base-step-wizard": 2,
-            "@divider": 5,
-            "@document": 7,
-            "@editorswitch": 5,
+            "@divider": 7,
+            "@document": 8,
+            "@editorswitch": 1,
             "@fico.vdl.attributes-panel": 1,
             "@fico.vdl.palette-panel": 1,
             "@form": 4,
-            "@menu": 6,
-            "@menuitem": 17,
+            "@menu": 5,
+            "@menuitem": 22,
             "@pane": 8,
             "@session": 8,
-            "@tab": 7,
-            "@undoManager": 7,
+            "@tab": 8,
+            "@undoManager": 8,
             "@welcome": 1
         }
     },
@@ -82,9 +156,9 @@
         "window": {
             "@fullscreen": false,
             "@maximized": false,
-            "@minimized": true,
-            "@position": "761:0",
-            "@size": "764:787"
+            "@minimized": false,
+            "@position": "161:40",
+            "@size": "1200:738"
         }
     },
     "menus": {
@@ -94,12 +168,12 @@
         "@installed": true
     },
     "od": {
-        "@last-run-config": "path:RnLA2_model.mos"
+        "@last-run-config": "path:Model_attempt2.mos"
     },
     "panecycle": {
         "json()": [
-            "tab1",
-            "tab6"
+            "tab2",
+            "tab7"
         ]
     },
     "panels": {
@@ -160,11 +234,19 @@
     "recentfiles": {
         "json()": []
     },
+    "search-history": {
+        "search": {
+            "json()": [
+                "FullOrderMatrix"
+            ]
+        }
+    },
     "tabs": {
         "json()": {
-            "focus": "tab6",
+            "focus": "/Model_attempt2.mos",
             "meta": {
                 "accessList": [
+                    "tab2",
                     "tab1",
                     "tab4",
                     "tab5",
@@ -181,14 +263,14 @@
                         "tab5"
                     ],
                     "document": {
-                        "changed": false,
                         "meta": {
-                            "timestamp": 1710365110281
+                            "timestamp": 1711018862511
                         },
                         "filter": true,
                         "title": "Template.mos",
                         "tooltip": "/assignment_files/Template.mos",
-                        "ace": {}
+                        "ace": {},
+                        "changed": false
                     },
                     "editorType": "ace",
                     "active": false
@@ -201,14 +283,37 @@
                         "tab3"
                     ],
                     "document": {
-                        "changed": false,
-                        "meta": {
-                            "timestamp": 1710614452097
-                        },
                         "filter": true,
                         "title": "WLP_Interchange.mos",
                         "tooltip": "/WS5_solns/WLP_Interchange.mos",
-                        "ace": {}
+                        "ace": {
+                            "folds": [],
+                            "scrolltop": 0,
+                            "scrollleft": 0,
+                            "selection": {
+                                "start": {
+                                    "row": 0,
+                                    "column": 0
+                                },
+                                "end": {
+                                    "row": 0,
+                                    "column": 0
+                                },
+                                "isBackwards": false
+                            },
+                            "options": {
+                                "guessTabSize": true,
+                                "useWrapMode": false,
+                                "wrapToView": true
+                            },
+                            "firstLineState": 0,
+                            "cleansed": true
+                        },
+                        "hash": "08a65d7b63402b011f5b39e9c82cc21e367e39ea",
+                        "meta": {
+                            "timestamp": 1711018862502
+                        },
+                        "changed": false
                     },
                     "editorType": "ace",
                     "active": false
@@ -224,7 +329,7 @@
                         "changed": false,
                         "meta": {
                             "ignoreState": 0,
-                            "timestamp": 1710957565921
+                            "timestamp": 1711022811095
                         },
                         "filter": true,
                         "title": "RnLA2_model.mos",
@@ -232,7 +337,7 @@
                         "ace": {}
                     },
                     "editorType": "ace",
-                    "active": true
+                    "active": false
                 },
                 {
                     "type": "tab",
@@ -244,7 +349,7 @@
                     "document": {
                         "changed": false,
                         "meta": {
-                            "timestamp": 1710365112218
+                            "timestamp": 1711018862507
                         },
                         "filter": true,
                         "title": "Data_Xpress.txt",
@@ -253,6 +358,27 @@
                     },
                     "editorType": "ace",
                     "active": false
+                },
+                {
+                    "type": "tab",
+                    "name": "tab2",
+                    "path": "/Model_attempt2.mos",
+                    "className": [
+                        "tab2",
+                        "focus"
+                    ],
+                    "document": {
+                        "changed": false,
+                        "meta": {
+                            "timestamp": 1711024900241
+                        },
+                        "filter": true,
+                        "title": "Model_attempt2.mos",
+                        "tooltip": "/Model_attempt2.mos",
+                        "ace": {}
+                    },
+                    "editorType": "ace",
+                    "active": true
                 }
             ],
             "skin": "editor_tab",

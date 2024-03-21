@@ -1,0 +1,213 @@
+model "The Layout Problem"
+  uses "mmsystem", "mmxprs","mmxnlp", "mmjobs"
+! setparam("XPRS_VERBOSE", true)
+
+forward procedure print_status
+
+! ============================================================================
+! Reading problem parameters
+! ============================================================================
+filename := "assignment_files/Data_Xpress.txt";
+start_time := gettime
+
+declarations
+  ! The number of product groups
+  nbProductGroups: integer
+  ! The maximal number of product groups per order
+  nbOrderSize: integer
+  ! The number of shelf spaces
+  nbShelves: integer
+  ! The number of orders
+  nbOrders: integer
+end-declarations
+
+! Reading the data
+initializations from filename
+  nbProductGroups nbOrderSize nbOrders nbShelves
+end-initializations
+
+declarations
+  ! The set of product groups
+  ProductGroups = 1..nbProductGroups
+  ! The set of orders
+  Orders = 1..nbOrders
+  ! The set of shelves
+  Shelves = 1..nbShelves
+  ! The set of shelves including the door
+  ShelvesDoor = 0..nbShelves
+
+  ! The matrix of orders
+  OrderMatrix: array(Orders,1..nbOrderSize) of integer
+
+  ! The distance matrix between pairs of shelves
+  DistanceShelves: array(Shelves,Shelves) of integer
+  ! The distance vector between the packaging area and each shelf
+  DistancePackaging: array(Shelves) of integer
+
+  ! Gives for each shelf the assigned product group
+  ShelfAllocation: array(Shelves) of integer
+end-declarations
+
+! Reading the data
+initializations from filename
+  OrderMatrix as "Orders"
+  ShelfAllocation as "Allocations"
+  DistanceShelves as "DistanceShelfShelf"
+  DistancePackaging as "DistancePackagingShelf"
+end-initializations
+
+
+! Adding the door to the distance matrix
+declarations
+    FullDistanceMatrix: array(ShelvesDoor, ShelvesDoor) of integer
+end-declarations
+
+FullDistanceMatrix(0,0) := 0
+forall(i in Shelves) do
+  FullDistanceMatrix(0, i) := DistancePackaging(i)
+  FullDistanceMatrix(i, 0) := DistancePackaging(i)
+  forall(j in Shelves) do
+    FullDistanceMatrix(i,j) := DistanceShelves(i,j)
+  end-do
+end-do
+
+
+
+! Convert the Order matrix to full size
+declarations
+  FullOrderMatrix: array(Orders, ProductGroups) of integer
+end-declarations
+
+forall(k in Orders, p in ProductGroups) FullOrderMatrix(k, p) := 0
+forall(k in Orders, p in 1..nbOrderSize) do
+  if(OrderMatrix(k,p) <> 0) then
+    FullOrderMatrix(k, OrderMatrix(k,p)) := 1
+  end-if
+end-do
+
+! Calculating number of products per order
+declarations
+  nbProductsPerOrder: array(Orders) of integer
+end-declarations
+
+forall(k in Orders) do
+  nbProductsPerOrder(k) := sum(p in ProductGroups) FullOrderMatrix(k,p)
+end-do
+
+
+! Allocation of products to shelves
+forall(i in ShelvesDoor, p in ProductGroups) x(i,p) := 0
+forall(i in Shelves | ShelfAllocation(i) > 0) do
+  forall(p in ProductGroups | p = ShelfAllocation(i)) do
+    x(i,p) := 1
+  end-do
+end-do
+
+
+declarations
+  MinDistancePerOrder: array(Orders) of real
+end-declarations
+
+
+  ! =======================================================================
+  ! =====================   Minimization subproblem   =====================
+  ! =======================================================================
+
+procedure min_distance(k: integer)
+  ! =================   Decision Variables   =================
+  start_time := gettime
+  declarations
+    y: array(ShelvesDoor, ShelvesDoor) of mpvar
+    u: array(ShelvesDoor) of mpvar
+  end-declarations
+
+  forall(i in ShelvesDoor, j in ShelvesDoor) do
+    y(i,j) is_binary
+    u(i) is_integer
+  end-do
+
+  ! =====================   Constraints   =====================
+  ! Must start and end each order at the door to Packaging.
+  StartFromDoorCS := sum(j in ShelvesDoor)(y(0,j)) = 1
+  EndAtDoorCS := sum(i in ShelvesDoor)(y(i,0)) = 1
+
+
+  ! ----------------------------------------------------------------
+  ! Each shelf should not be visited more than once per order
+  forall(j in ShelvesDoor) do
+    MaxOneDepartureCS(j) := sum(i in ShelvesDoor)(y(i,j)) <= 1
+  end-do
+
+  forall(i in ShelvesDoor) do
+    MaxOneArrivalCS(i) := sum(j in ShelvesDoor)(y(i,j)) <= 1
+  end-do
+  ! ----------------------------------------------------------------
+
+  ! Can't go from shelf i to shelf i
+  forall(i in ShelvesDoor) NoReturnCS(i) := y(i,i) = 0
+
+
+  ! Only visit shelves that correspond to the products in the order
+  forall(j in Shelves) do
+    VisitRequiredCS(j) := sum(i in ShelvesDoor)(y(i,j)) = sum(p in ProductGroups | FullOrderMatrix(k,p) = 1) x(j,p)
+  end-do
+
+
+  ! MTZ constraints
+  MTZ_doorCS1 := u(0) = 1
+  forall(i in Shelves, j in Shelves| i <> j) do
+    MTZ_CS(i,j) := u(i) - u(j) + nbProductsPerOrder(k)*y(i,j) <= nbProductsPerOrder(k)-1
+  end-do
+
+  forall(i in Shelves) do
+      MTZ_2CS(i) := u(i) >= 1
+      ! MTZ_3CS(i) := u(i) <= nbProductsPerOrder(k) + 1
+  end-do
+
+  ! =====================   Objective function   =====================
+  WalkingDistance := sum(i in ShelvesDoor, j in ShelvesDoor | i <> j) (FullDistanceMatrix(i,j) * y(i,j))
+
+  minimise(WalkingDistance)
+  MinDistancePerOrder(k) := getobjval
+  end_time := gettime
+
+  writeln("Order ", k, ":")
+  forall(i in ShelvesDoor, j in ShelvesDoor) do
+      if (getsol(y(i,j)) >= 0.5) then
+          write(i, " --> ", j, ", ")
+      end-if
+  end-do
+  writeln
+  writeln("Total Distance: ", getobjval)
+
+  print_status
+  writeln("Time elapsed: ", end_time-start_time, " seconds.")
+
+end-procedure
+
+
+forall(k in 1..5 | nbProductsPerOrder(k) > 4) do
+  min_distance(k)
+end-do
+
+TotalWalkingDistance := sum(k in Orders) MinDistancePerOrder(k)
+writeln("Total minimized walking distance:", TotalWalkingDistance)
+
+
+procedure print_status
+declarations
+  status: string
+end-declarations
+case getprobstat of
+  XPRS_OPT: status:="Solved to optimality"
+  XPRS_UNF: status:="Unfinished"
+  XPRS_INF: status:="Infeasible"
+  XPRS_UNB: status:="Unbounded"
+  XPRS_OTH: status:="Unsolved or objective worse than cutoff"
+  else status:="???"
+end-case
+writeln("Problem status: ", status)
+end-procedure
+
+
+end-model
