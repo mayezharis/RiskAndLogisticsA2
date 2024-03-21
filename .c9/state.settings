@@ -81,8 +81,8 @@
     "local": {
         "window": {
             "@fullscreen": false,
-            "@maximized": false,
-            "@minimized": true,
+            "@maximized": true,
+            "@minimized": false,
             "@position": "761:0",
             "@size": "764:787"
         }
@@ -162,7 +162,7 @@
     },
     "tabs": {
         "json()": {
-            "focus": "tab6",
+            "focus": "/RnLA2_model.mos",
             "meta": {
                 "accessList": [
                     "tab1",
@@ -218,13 +218,14 @@
                     "name": "tab1",
                     "path": "/RnLA2_model.mos",
                     "className": [
-                        "tab1"
+                        "tab1",
+                        "focus"
                     ],
                     "document": {
                         "changed": false,
                         "meta": {
                             "ignoreState": 0,
-                            "timestamp": 1710957565921
+                            "timestamp": 1710959578783
                         },
                         "filter": true,
                         "title": "RnLA2_model.mos",
