@@ -1,11 +1,13 @@
 model "The Layout Problem"
   uses "mmsystem", "mmjobs", "mmxprs", "mmxnlp"
-
+setparam("XPRS_VERBOSE", true)
 
 ! ============================================================================
 ! Reading problem parameters
 ! ============================================================================
 filename := "assignment_files/Data_Xpress.txt";
+start_time := gettime
+
 
 declarations
   ! The number of product groups
@@ -28,8 +30,9 @@ declarations
   ProductGroups = 1..nbProductGroups
   ! The set of orders
   Orders = 1..nbOrders
-  ! The set of shelves
+  ! The sets of shelves
   Shelves = 1..nbShelves
+  ShelvesDoor = 0..nbShelves
 
   ! The matrix of orders
   OrderMatrix: array(Orders,1..nbOrderSize) of integer
@@ -51,25 +54,27 @@ initializations from filename
   DistancePackaging as "DistancePackagingShelf"
 end-initializations
 
+
 declarations
-    x: array(Shelves, ProductGroups) of mpvar ! x_sp
-    y: array(Shelves, Shelves, Orders) of mpvar ! y_ijk
-    z: array(Shelves, Orders) of mpvar ! z_ik
+    x: array(ShelvesDoor, ProductGroups) of integer ! x_sp
+    y: array(ShelvesDoor, ShelvesDoor, Orders) of mpvar ! y_ijk
+    ! z: array(ShelvesDoor, Orders) of mpvar ! z_ik
+    u: array(ShelvesDoor, Orders) of mpvar ! u_ik
 end-declarations
 
 
-! Decision variables
-forall(i in Shelves, p in ProductGroups) do
-    x(i,p) is_binary
-end-do
+! ! Decision variables
+! forall(i in ShelvesDoor, p in ProductGroups) do
+!     x(i,p) is_binary
+! end-do
 
-forall(i in Shelves, j in Shelves, k in Orders) do
+forall(i in ShelvesDoor, j in ShelvesDoor, k in Orders) do
     y(i,j,k) is_binary
+    ! z(i,k) is_binary
+    u(i,k) is_integer
 end-do
 
-forall(i in Shelves, k in Orders) do
-    z(i,k) is_binary
-end-do
+
 
 
 ! ===========================================================
@@ -77,7 +82,6 @@ end-do
 ! ===========================================================
 
 declarations
-    ShelvesDoor = 0..nbShelves
     FullDistanceMatrix: array(ShelvesDoor, ShelvesDoor) of integer
     ! i, j: integer
 end-declarations
@@ -109,22 +113,44 @@ end-do
 
 
 ! ===========================================================
-! Convert the Allocations vector to a matrix
+! Convert the Allocations vector to a matrix (i've just changed x(i,p) instead now)
 ! ===========================================================
-declarations
-  AllocationsMatrix: array(ShelvesDoor, ProductGroups) of integer
-end-declarations
+! declarations
+!   AllocationsMatrix: array(ShelvesDoor, ProductGroups) of integer
+! end-declarations
 
-forall(i in ShelvesDoor, p in ProductGroups) AllocationsMatrix(i, p) := 0
+! forall(i in ShelvesDoor, p in ProductGroups) AllocationsMatrix(i, p) := 0
 
-forall(p in ProductGroups) AllocationsMatrix(0, p) := 0
+! forall(p in ProductGroups) AllocationsMatrix(0, p) := 0
 
-! Populate AllocationsMatrix based on the Allocations vector
+! ! Populate AllocationsMatrix based on the Allocations vector
+! forall(i in Shelves) do
+!   if ShelfAllocation(i) <> 0 then
+!     AllocationsMatrix(i, ShelfAllocation(i)) := 1
+!   end-if
+! end-do 
+
+
+
+! forall(i in Shelves) do
+!   if (ShelfAllocation(i) <> 0) then
+!     x(i, ShelfAllocation(i)) := 1
+!   end-if
+! end-do
+
+forall(p in ProductGroups) x(0,p) := 0 
+
 forall(i in Shelves) do
-  if ShelfAllocation(i) <> 0 then
-    AllocationsMatrix(i, ShelfAllocation(i)) := 1
+  if (ShelfAllocation(i) <> 0) then
+    forall(p in ProductGroups) do
+      if (p = ShelfAllocation(i)) then
+        x(i,p) := 1
+      else
+        x(i,p) := 0
+      end-if
+    end-do
   end-if
-end-do 
+end-do
 
 ! ! Code to check whether the allocation matrix works
 ! writeln("Allocation Matrix:")
@@ -154,9 +180,6 @@ forall(k in Orders, p in 1..nbOrderSize) do
     end-if
 end-do
 
-! forall(p in ProductGroups) AllocationsMatrix(0, p) := 0
-
-
 ! ! Code to check whether the full order matrix works
 ! writeln("Full Order Matrix:")
 ! forall(k in Orders) do
@@ -171,11 +194,34 @@ end-do
 
 
 
+! ===========================================================
+! Constructing |V_k|
+! ===========================================================
+declarations
+  nbProductsPerOrder: array(Orders) of integer
+end-declarations
+
+forall(k in Orders) do
+  nbProductsPerOrder(k) := sum(p in ProductGroups) FullOrderMatrix(k,p)
+end-do
+
+! writeln("V_k")
+! forall(k in Orders) do
+!   write("Order ", k, ": ", nbProductsPerOrder(k))
+!   writeln
+! end-do
+
+! ===========================================================
+! ===========================================================
 
 
 ! Objective function
 
-TotalWalkingDistance := sum(k in Orders, i in ShelvesDoor, j in ShelvesDoor | i <> j) (FullDistanceMatrix(i,j) * y(i,j,k))
+forall(k in Orders) do
+DistancePerOrder(k):= sum(i in ShelvesDoor, j in ShelvesDoor | i <> j) (FullDistanceMatrix(i,j) * y(i,j,k))
+end-do
+
+TotalWalkingDistance := sum(k in Orders) DistancePerOrder(k)
 
 
 
@@ -188,6 +234,7 @@ forall(k in Orders) do
 end-do
 
 
+! ----------------------------------------------------------------
 ! Each shelf should not be visited more than once per order
 forall(j in ShelvesDoor, k in Orders) do
   MaxOneDepartureCS(j,k) := sum(i in ShelvesDoor)(y(i,j,k)) <= 1
@@ -196,22 +243,143 @@ end-do
 forall(i in ShelvesDoor, k in Orders) do
   MaxOneArrivalCS(i,k) := sum(j in ShelvesDoor)(y(i,j,k)) <= 1
 end-do
+! ----------------------------------------------------------------
 
 ! Can't go from shelf i to shelf i
 forall(i in ShelvesDoor, k in Orders) NoReturnCS(i,k) := y(i,i,k) = 0
 
-
-! =======================================================
-! NEED HELP WITH THIS CONSTRAINT
-! =======================================================
 ! Only visit shelves that correspond to the products in the order
 forall(k in Orders, j in Shelves) do
-  OnlyVisitRequiredCS(k,j) := sum(i in ShelvesDoor)(y(i,j,k)) = sum(p in ProductGroups)(FullOrderMatrix(k,p))
+  VisitRequiredCS(k,j) := sum(i in ShelvesDoor)(y(i,j,k)) = sum(p in ProductGroups | FullOrderMatrix(k,p) = 1) x(j,p)
 end-do
-! =======================================================
-! =======================================================
+! Might need to change the above constraint to consider ShelvesDoor everywhere
+
+
+
+
+! ! MTZ constraints
+forall(k in Orders) do
+  MTZ_doorCS1(k) := u(0,k) = 1
+  ! MTZ_doorCS2(k) := u(nbProductsPerOrder(k)+2,k) = 0
+  ! forall(i in nbProductsPerOrder(k)+2..7) MTZ_staydoorCS(i,k) := u(i,k) = 0
+  forall(i in Shelves, j in Shelves| i <> j) do
+    ! MTZ_1CS(k,i,j) := u(i,k) - u(j,k) + 1 <= (nbProductsPerOrder(k) - 1)*(1- y(i,j,k))
+    MTZ_CS(k,i,j) := u(i,k) - u(j,k) + nbProductsPerOrder(k)*y(i,j,k) <= nbProductsPerOrder(k)-1
+  end-do
+end-do
+
+
+
+forall(k in Orders, i in Shelves) do
+    MTZ_2CS(k,i) := u(i,k) >= 1
+    ! MTZ_3CS(k,i) := u(i,k) <= nbProductsPerOrder(k) + 1
+end-do
 
 minimise(TotalWalkingDistance)
+
+end_time := gettime
+
+
+procedure print_status
+declarations
+  status: string
+end-declarations
+case getprobstat of
+  XPRS_OPT: status:="Solved to optimality"
+  XPRS_UNF: status:="Unfinished"
+  XPRS_INF: status:="Infeasible"
+  XPRS_UNB: status:="Unbounded"
+  XPRS_OTH: status:="Unsolved or objective worse than cutoff"
+  else status:="???"
+end-case
+writeln("Problem status: ", status)
+end-procedure
+
+
+! =====================================================================
+! =====================================================================
+! declarations
+!     ! Add a variable to keep track of iteration count
+!     iter: integer
+!     status: integer
+! end-declarations
+
+! ! Initialize iteration count
+! iter := 0
+
+! ! Before optimization starts, print initial values
+! writeln("Initial values:")
+! writeln("---------------")
+! print_status ! Print problem status
+! ! Add more print statements as needed to inspect initial values of variables and constraints
+
+! ! Inside the optimization loop, periodically print intermediate values
+! while (status <> XPRS_OPT and status <> XPRS_UNF) do
+!     iter := iter + 1 ! Increment iteration count
+!     writeln("Iteration ", iter, ":")
+!     writeln("---------------")
+!     ! Add print statements to inspect values of variables and constraints
+!     status := getprobstat ! Update problem status
+!     writeln("Problem status: ", status)
+!     ! Add more print statements as needed to inspect intermediate values
+! end-do
+
+! ! After optimization, print final solution
+! writeln("Final solution:")
+! writeln("---------------")
+! print_status ! Print final problem status
+! ! Add more print statements as needed to inspect final values of variables and constraints
+
+! =====================================================================
+! =====================================================================
+! =====================================================================
+
+
+! Print solution
+! declarations
+! shelves_visited: list of integer
+! end-declarations
+
+! writeln("Routes for each order:")
+! writeln("-----------------------")
+! forall(k in Orders) do
+!     writeln("Order ", k, ":")
+!     writeln("-------")
+!     writeln("Route:")
+!     writeln("------")
+!     ! Initialize a list to store visited shelves
+!     shelves_visited := []
+
+!     forall(i in ShelvesDoor, j in ShelvesDoor | i <> j) do
+!         if (getsol(y(i,j,k)) > 0.5) then
+!             shelves_visited.add(j) ! Add the visited shelf to the list
+!         end-if
+!     end-do
+    
+!     ! Print the route
+!     writeln("From door to shelf ", shelves_visited.at(1))
+!     forall(idx in 2..shelves_visited.size) do
+!         writeln("From shelf ", shelves_visited.at(idx-1), " to shelf ", shelves_visited.at(idx))
+!     end-do
+!     writeln("From shelf ", shelves_visited.at(shelves_visited.size), " back to door")
+!     writeln
+! end-do
+
+
+
+forall(k in Orders) do
+    writeln("Order ", k, ":")
+    forall(i in ShelvesDoor, j in ShelvesDoor | i <> j) do
+        if (getsol(y(i,j,k)) > 0.5) then
+            write(i, " --> ", j, ", " )
+        end-if
+    end-do
+    writeln
+end-do
+writeln("Total Walking Distance: ", getobjval)
+
+print_status
+writeln("Time elapsed: ", end_time-start_time, " seconds.")
 
 end-model
 
