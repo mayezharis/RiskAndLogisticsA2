@@ -1,0 +1,31 @@
+Results for LSH on the Random Constructive Heuristic allocation
+Initial distance : 278652
+Time taken to find neighbourhoods: 40.49 seconds.
+===== VNS iteration 1 =====
+Time elapsed so far: 40.49 seconds.
+Initial distance : 274272
+Time taken to find neighbourhoods: 46.00 seconds.
+===== VNS iteration 2 =====
+Time elapsed so far: 86.49 seconds.
+Initial distance : 272016
+Time taken to find neighbourhoods: 49.71 seconds.
+===== VNS iteration 3 =====
+Time elapsed so far: 136.20 seconds.
+Initial distance : 269466
+Time taken to find neighbourhoods: 47.04 seconds.
+===== VNS iteration 4 =====
+Time elapsed so far: 183.24 seconds.
+Initial distance : 267516
+Time taken to find neighbourhoods: 48.90 seconds.
+===== VNS iteration 5 =====
+Time elapsed so far: 232.14 seconds.
+Initial distance : 264378
+Time taken to find neighbourhoods: 44.26 seconds.
+===== VNS iteration 6 =====
+Time elapsed so far: 276.40 seconds.
+...
+Time elapsed so far: 2540.17 seconds.
+Initial distance : 222684
+Time taken to find neighbourhoods: 41.58 seconds.
+Total time taken: 2581.75 seconds.
+k=10
