@@ -54,3 +54,4 @@ Time elapsed so far: 1507.76 seconds.
 Initial distance : 202164
 Time taken to find neighbourhoods: 116.76 seconds.
 Total time taken: 1624.52 seconds.
+k=10
