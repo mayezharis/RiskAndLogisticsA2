@@ -1,0 +1,53 @@
+Results for LSH on the GH allocation and 2 middle aisle
+Initial distance : 185472
+Time taken to find neighbourhoods: 91.82 seconds.
+===== VNS iteration 1 =====
+Time elapsed so far: 91.82 seconds.
+Initial distance : 185292
+Time taken to find neighbourhoods: 173.97 seconds.
+===== VNS iteration 2 =====
+Time elapsed so far: 265.80 seconds.
+Initial distance : 185136
+Time taken to find neighbourhoods: 161.04 seconds.
+===== VNS iteration 3 =====
+Time elapsed so far: 426.84 seconds.
+Initial distance : 185022
+Time taken to find neighbourhoods: 130.53 seconds.
+===== VNS iteration 4 =====
+Time elapsed so far: 557.37 seconds.
+Initial distance : 184944
+Time taken to find neighbourhoods: 114.94 seconds.
+===== VNS iteration 5 =====
+Time elapsed so far: 672.31 seconds.
+Initial distance : 184902
+Time taken to find neighbourhoods: 125.05 seconds.
+===== VNS iteration 6 =====
+Time elapsed so far: 797.36 seconds.
+Initial distance : 184758
+Time taken to find neighbourhoods: 123.14 seconds.
+===== VNS iteration 7 =====
+Time elapsed so far: 920.50 seconds.
+Initial distance : 184698
+Time taken to find neighbourhoods: 110.88 seconds.
+===== VNS iteration 8 =====
+Time elapsed so far: 1031.38 seconds.
+Initial distance : 184656
+Time taken to find neighbourhoods: 103.23 seconds.
+===== VNS iteration 9 =====
+Time elapsed so far: 1134.62 seconds.
+Initial distance : 184626
+Time taken to find neighbourhoods: 116.81 seconds.
+===== VNS iteration 10 =====
+Time elapsed so far: 1251.43 seconds.
+Initial distance : 184596
+Time taken to find neighbourhoods: 115.44 seconds.
+===== VNS iteration 11 =====
+Time elapsed so far: 1366.87 seconds.
+Initial distance : 184524
+Time taken to find neighbourhoods: 143.14 seconds.
+===== VNS iteration 12 =====
+Time elapsed so far: 1510.01 seconds.
+Initial distance : 184518
+Time taken to find neighbourhoods: 117.70 seconds.
+Total time taken: 1627.71 seconds.
+k=5

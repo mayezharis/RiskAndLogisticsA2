@@ -1,0 +1,37 @@
+Results for LSH on the Most Common Product ConstructiveHeuristic
+Initial distance : 203808
+Time taken to find neighbourhoods: 183.35 seconds.
+===== VNS iteration 1 =====
+Time elapsed so far: 183.35 seconds.
+Initial distance : 203538
+Time taken to find neighbourhoods: 190.78 seconds.
+===== VNS iteration 2 =====
+Time elapsed so far: 374.14 seconds.
+Initial distance : 203466
+Time taken to find neighbourhoods: 295.05 seconds.
+===== VNS iteration 3 =====
+Time elapsed so far: 669.19 seconds.
+Initial distance : 203370
+Time taken to find neighbourhoods: 249.89 seconds.
+===== VNS iteration 4 =====
+Time elapsed so far: 919.08 seconds.
+Initial distance : 203298
+Time taken to find neighbourhoods: 223.15 seconds.
+===== VNS iteration 5 =====
+Time elapsed so far: 1142.24 seconds.
+Initial distance : 202980
+Time taken to find neighbourhoods: 279.54 seconds.
+===== VNS iteration 6 =====
+Time elapsed so far: 1421.95 seconds.
+Initial distance : 202896
+Time taken to find neighbourhoods: 660.23 seconds.
+===== VNS iteration 7 =====
+Time elapsed so far: 2082.23 seconds.
+Initial distance : 202866
+Time taken to find neighbourhoods: 462.02 seconds.
+===== VNS iteration 8 =====
+Time elapsed so far: 2544.27 seconds.
+Initial distance : 202842
+Time taken to find neighbourhoods: 313.76 seconds.
+Total time: 2858.05 seconds.
+k=10

@@ -1,0 +1,17 @@
+Results for LSH on the Slightly Greedy Constructive Heuristic allocation
+Initial distance : 201888
+Time taken to find neighbourhoods: 204.63 seconds.
+===== VNS iteration 1 =====
+Time elapsed so far: 204.64 seconds.
+Initial distance : 201558
+Time taken to find neighbourhoods: 227.31 seconds.
+===== VNS iteration 2 =====
+Time elapsed so far: 431.95 seconds.
+Initial distance : 201420
+Time taken to find neighbourhoods: 190.79 seconds.
+===== VNS iteration 3 =====
+Time elapsed so far: 622.74 seconds.
+Initial distance : 201414
+Time taken to find neighbourhoods: 179.18 seconds.
+Total time taken: 801.92 seconds.
+k=10

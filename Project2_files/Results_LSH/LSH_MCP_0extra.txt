@@ -1,0 +1,57 @@
+Results for LSH on the Most Common Product ConstructiveHeuristic 0 extra products
+Initial distance : 205038
+Time taken to find neighbourhoods: 185.25 seconds.
+===== VNS iteration 1 =====
+Time elapsed so far: 185.27 seconds.
+Initial distance : 204504
+Time taken to find neighbourhoods: 135.93 seconds.
+===== VNS iteration 2 =====
+Time elapsed so far: 321.20 seconds.
+Initial distance : 204342
+Time taken to find neighbourhoods: 117.70 seconds.
+===== VNS iteration 3 =====
+Time elapsed so far: 438.90 seconds.
+Initial distance : 204096
+Time taken to find neighbourhoods: 103.13 seconds.
+===== VNS iteration 4 =====
+Time elapsed so far: 542.04 seconds.
+Initial distance : 203892
+Time taken to find neighbourhoods: 124.56 seconds.
+===== VNS iteration 5 =====
+Time elapsed so far: 666.60 seconds.
+Initial distance : 203754
+Time taken to find neighbourhoods: 112.71 seconds.
+===== VNS iteration 6 =====
+Time elapsed so far: 779.31 seconds.
+Initial distance : 203526
+Time taken to find neighbourhoods: 107.76 seconds.
+===== VNS iteration 7 =====
+Time elapsed so far: 887.07 seconds.
+Initial distance : 203280
+Time taken to find neighbourhoods: 113.83 seconds.
+===== VNS iteration 8 =====
+Time elapsed so far: 1000.91 seconds.
+Initial distance : 203172
+Time taken to find neighbourhoods: 91.88 seconds.
+===== VNS iteration 9 =====
+Time elapsed so far: 1092.79 seconds.
+Initial distance : 202926
+Time taken to find neighbourhoods: 80.90 seconds.
+===== VNS iteration 10 =====
+Time elapsed so far: 1173.69 seconds.
+Initial distance : 202596
+Time taken to find neighbourhoods: 81.42 seconds.
+===== VNS iteration 11 =====
+Time elapsed so far: 1255.11 seconds.
+Initial distance : 202548
+Time taken to find neighbourhoods: 138.23 seconds.
+===== VNS iteration 12 =====
+Time elapsed so far: 1393.34 seconds.
+Initial distance : 202218
+Time taken to find neighbourhoods: 114.42 seconds.
+===== VNS iteration 13 =====
+Time elapsed so far: 1507.76 seconds.
+Initial distance : 202164
+Time taken to find neighbourhoods: 116.76 seconds.
+Total time taken: 1624.52 seconds.
+k=10

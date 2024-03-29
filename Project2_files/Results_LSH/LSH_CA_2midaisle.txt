@@ -1,0 +1,213 @@
+Results for LSH on the Current Allocation with 2 middle aisle
+Initial distance : 288474
+Time taken to find neighbourhoods: 49.03 seconds.
+===== VNS iteration 1 =====
+Time elapsed so far: 49.04 seconds.
+Initial distance : 279354
+Time taken to find neighbourhoods: 46.64 seconds.
+===== VNS iteration 2 =====
+Time elapsed so far: 95.68 seconds.
+Initial distance : 269862
+Time taken to find neighbourhoods: 45.81 seconds.
+===== VNS iteration 3 =====
+Time elapsed so far: 141.49 seconds.
+Initial distance : 262392
+Time taken to find neighbourhoods: 45.52 seconds.
+===== VNS iteration 4 =====
+Time elapsed so far: 187.01 seconds.
+Initial distance : 258588
+Time taken to find neighbourhoods: 45.60 seconds.
+===== VNS iteration 5 =====
+Time elapsed so far: 232.61 seconds.
+Initial distance : 254946
+Time taken to find neighbourhoods: 44.04 seconds.
+===== VNS iteration 6 =====
+Time elapsed so far: 276.65 seconds.
+Initial distance : 252102
+Time taken to find neighbourhoods: 43.68 seconds.
+===== VNS iteration 7 =====
+Time elapsed so far: 320.33 seconds.
+Initial distance : 249048
+Time taken to find neighbourhoods: 43.14 seconds.
+===== VNS iteration 8 =====
+Time elapsed so far: 363.47 seconds.
+Initial distance : 246810
+Time taken to find neighbourhoods: 45.74 seconds.
+===== VNS iteration 9 =====
+Time elapsed so far: 409.21 seconds.
+Initial distance : 244836
+Time taken to find neighbourhoods: 45.83 seconds.
+===== VNS iteration 10 =====
+Time elapsed so far: 455.04 seconds.
+Initial distance : 242538
+Time taken to find neighbourhoods: 45.78 seconds.
+===== VNS iteration 11 =====
+Time elapsed so far: 500.83 seconds.
+Initial distance : 238086
+Time taken to find neighbourhoods: 46.13 seconds.
+===== VNS iteration 12 =====
+Time elapsed so far: 546.96 seconds.
+Initial distance : 235812
+Time taken to find neighbourhoods: 47.23 seconds.
+===== VNS iteration 13 =====
+Time elapsed so far: 594.19 seconds.
+Initial distance : 233064
+Time taken to find neighbourhoods: 46.64 seconds.
+===== VNS iteration 14 =====
+Time elapsed so far: 640.83 seconds.
+Initial distance : 231768
+Time taken to find neighbourhoods: 45.77 seconds.
+===== VNS iteration 15 =====
+Time elapsed so far: 686.60 seconds.
+Initial distance : 230460
+Time taken to find neighbourhoods: 45.54 seconds.
+===== VNS iteration 16 =====
+Time elapsed so far: 732.15 seconds.
+Initial distance : 229362
+Time taken to find neighbourhoods: 46.35 seconds.
+===== VNS iteration 17 =====
+Time elapsed so far: 778.50 seconds.
+Initial distance : 227616
+Time taken to find neighbourhoods: 55.31 seconds.
+===== VNS iteration 18 =====
+Time elapsed so far: 833.80 seconds.
+Initial distance : 225480
+Time taken to find neighbourhoods: 58.20 seconds.
+===== VNS iteration 19 =====
+Time elapsed so far: 892.01 seconds.
+Initial distance : 223962
+Time taken to find neighbourhoods: 41.35 seconds.
+===== VNS iteration 20 =====
+Time elapsed so far: 933.36 seconds.
+Initial distance : 222666
+Time taken to find neighbourhoods: 46.73 seconds.
+===== VNS iteration 21 =====
+Time elapsed so far: 980.09 seconds.
+Initial distance : 218934
+Time taken to find neighbourhoods: 46.05 seconds.
+===== VNS iteration 22 =====
+Time elapsed so far: 1026.14 seconds.
+Initial distance : 218064
+Time taken to find neighbourhoods: 45.92 seconds.
+===== VNS iteration 23 =====
+Time elapsed so far: 1072.06 seconds.
+Initial distance : 217494
+Time taken to find neighbourhoods: 45.39 seconds.
+===== VNS iteration 24 =====
+Time elapsed so far: 1117.45 seconds.
+Initial distance : 215862
+Time taken to find neighbourhoods: 45.83 seconds.
+===== VNS iteration 25 =====
+Time elapsed so far: 1163.28 seconds.
+Initial distance : 214482
+Time taken to find neighbourhoods: 46.78 seconds.
+===== VNS iteration 26 =====
+Time elapsed so far: 1210.07 seconds.
+Initial distance : 213882
+Time taken to find neighbourhoods: 46.01 seconds.
+===== VNS iteration 27 =====
+Time elapsed so far: 1256.08 seconds.
+Initial distance : 213396
+Time taken to find neighbourhoods: 42.14 seconds.
+===== VNS iteration 28 =====
+Time elapsed so far: 1298.22 seconds.
+Initial distance : 212952
+Time taken to find neighbourhoods: 41.95 seconds.
+===== VNS iteration 29 =====
+Time elapsed so far: 1340.17 seconds.
+Initial distance : 211248
+Time taken to find neighbourhoods: 42.17 seconds.
+===== VNS iteration 30 =====
+Time elapsed so far: 1382.34 seconds.
+Initial distance : 211056
+Time taken to find neighbourhoods: 38.96 seconds.
+===== VNS iteration 31 =====
+Time elapsed so far: 1421.31 seconds.
+Initial distance : 210300
+Time taken to find neighbourhoods: 41.88 seconds.
+===== VNS iteration 32 =====
+Time elapsed so far: 1463.19 seconds.
+Initial distance : 209394
+Time taken to find neighbourhoods: 42.07 seconds.
+===== VNS iteration 33 =====
+Time elapsed so far: 1505.26 seconds.
+Initial distance : 208734
+Time taken to find neighbourhoods: 42.08 seconds.
+===== VNS iteration 34 =====
+Time elapsed so far: 1547.34 seconds.
+Initial distance : 208158
+Time taken to find neighbourhoods: 42.01 seconds.
+===== VNS iteration 35 =====
+Time elapsed so far: 1589.36 seconds.
+Initial distance : 207630
+Time taken to find neighbourhoods: 41.77 seconds.
+===== VNS iteration 36 =====
+Time elapsed so far: 1631.13 seconds.
+Initial distance : 207234
+Time taken to find neighbourhoods: 42.44 seconds.
+===== VNS iteration 37 =====
+Time elapsed so far: 1673.57 seconds.
+Initial distance : 206988
+Time taken to find neighbourhoods: 45.87 seconds.
+===== VNS iteration 38 =====
+Time elapsed so far: 1719.44 seconds.
+Initial distance : 206820
+Time taken to find neighbourhoods: 46.12 seconds.
+===== VNS iteration 39 =====
+Time elapsed so far: 1765.56 seconds.
+Initial distance : 206526
+Time taken to find neighbourhoods: 41.91 seconds.
+===== VNS iteration 40 =====
+Time elapsed so far: 1807.47 seconds.
+Initial distance : 206370
+Time taken to find neighbourhoods: 44.79 seconds.
+===== VNS iteration 41 =====
+Time elapsed so far: 1852.26 seconds.
+Initial distance : 206220
+Time taken to find neighbourhoods: 44.65 seconds.
+===== VNS iteration 42 =====
+Time elapsed so far: 1896.92 seconds.
+Initial distance : 205362
+Time taken to find neighbourhoods: 45.23 seconds.
+===== VNS iteration 43 =====
+Time elapsed so far: 1942.15 seconds.
+Initial distance : 205254
+Time taken to find neighbourhoods: 44.90 seconds.
+===== VNS iteration 44 =====
+Time elapsed so far: 1987.05 seconds.
+Initial distance : 205170
+Time taken to find neighbourhoods: 41.28 seconds.
+===== VNS iteration 45 =====
+Time elapsed so far: 2028.33 seconds.
+Initial distance : 204918
+Time taken to find neighbourhoods: 45.05 seconds.
+===== VNS iteration 46 =====
+Time elapsed so far: 2073.38 seconds.
+Initial distance : 204846
+Time taken to find neighbourhoods: 45.60 seconds.
+===== VNS iteration 47 =====
+Time elapsed so far: 2118.98 seconds.
+Initial distance : 204630
+Time taken to find neighbourhoods: 44.67 seconds.
+===== VNS iteration 48 =====
+Time elapsed so far: 2163.65 seconds.
+Initial distance : 204444
+Time taken to find neighbourhoods: 44.41 seconds.
+===== VNS iteration 49 =====
+Time elapsed so far: 2208.07 seconds.
+Initial distance : 204396
+Time taken to find neighbourhoods: 44.37 seconds.
+===== VNS iteration 50 =====
+Time elapsed so far: 2252.44 seconds.
+Initial distance : 204024
+Time taken to find neighbourhoods: 44.43 seconds.
+===== VNS iteration 51 =====
+Time elapsed so far: 2296.86 seconds.
+Initial distance : 203952
+Time taken to find neighbourhoods: 44.47 seconds.
+===== VNS iteration 52 =====
+Time elapsed so far: 2341.34 seconds.
+Initial distance : 203892
+Time taken to find neighbourhoods: 44.97 seconds.
+Total time taken: 2386.31 seconds.
+k=5

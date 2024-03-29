@@ -1,0 +1,41 @@
+Results for LSH on the MCP allocations with 0 shelves filled and 3 middle aisle
+Initial distance : 189336
+Time taken to find neighbourhoods: 70.83 seconds.
+===== VNS iteration 1 =====
+Time elapsed so far: 70.83 seconds.
+Initial distance : 189096
+Time taken to find neighbourhoods: 130.28 seconds.
+===== VNS iteration 2 =====
+Time elapsed so far: 201.14 seconds.
+Initial distance : 188874
+Time taken to find neighbourhoods: 79.99 seconds.
+===== VNS iteration 3 =====
+Time elapsed so far: 281.14 seconds.
+Initial distance : 188700
+Time taken to find neighbourhoods: 79.27 seconds.
+===== VNS iteration 4 =====
+Time elapsed so far: 360.41 seconds.
+Initial distance : 188640
+Time taken to find neighbourhoods: 76.42 seconds.
+===== VNS iteration 5 =====
+Time elapsed so far: 436.83 seconds.
+Initial distance : 188526
+Time taken to find neighbourhoods: 90.37 seconds.
+===== VNS iteration 6 =====
+Time elapsed so far: 527.21 seconds.
+Initial distance : 188490
+Time taken to find neighbourhoods: 84.11 seconds.
+===== VNS iteration 7 =====
+Time elapsed so far: 611.32 seconds.
+Initial distance : 188448
+Time taken to find neighbourhoods: 77.82 seconds.
+===== VNS iteration 8 =====
+Time elapsed so far: 689.14 seconds.
+Initial distance : 188388
+Time taken to find neighbourhoods: 78.29 seconds.
+===== VNS iteration 9 =====
+Time elapsed so far: 767.44 seconds.
+Initial distance : 188328
+Time taken to find neighbourhoods: 123.55 seconds.
+Total time taken: 890.99 seconds.
+k=5 

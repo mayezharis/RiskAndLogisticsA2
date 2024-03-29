@@ -1,0 +1,21 @@
+Results for LSH on the GH allocation and 3 middle aisle
+Initial distance : 188088
+Time taken to find neighbourhoods: 121.14 seconds.
+===== VNS iteration 1 =====
+Time elapsed so far: 121.14 seconds.
+Initial distance : 187926
+Time taken to find neighbourhoods: 121.17 seconds.
+===== VNS iteration 2 =====
+Time elapsed so far: 242.31 seconds.
+Initial distance : 187896
+Time taken to find neighbourhoods: 126.12 seconds.
+===== VNS iteration 3 =====
+Time elapsed so far: 368.43 seconds.
+Initial distance : 187884
+Time taken to find neighbourhoods: 109.57 seconds.
+===== VNS iteration 4 =====
+Time elapsed so far: 478.00 seconds.
+Initial distance : 187638
+Time taken to find neighbourhoods: 123.68 seconds.
+Total time taken: 601.67 seconds.
+k=5
